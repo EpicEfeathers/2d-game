@@ -7,7 +7,7 @@ import random
 
 from generate_corners import check_grass_tile, check_stone_tile, check_sand_tile
 from map import generate_map, display_map
-from terrain import generate_terrain
+from terrain import generate_terrain, blit_terrain
 
 from pygame.locals import *
 
@@ -27,7 +27,7 @@ tile_size = terrain_images_size * scale
 sand_img = pygame.transform.scale(pygame.image.load('textures/tiles/sand.png'), new_size)
 stone_img = pygame.transform.scale(pygame.image.load('textures/tiles/stone.png'), new_size)
 grass_img = pygame.transform.scale(pygame.image.load('textures/tiles/grass.png'), new_size)
-grass_img2 = pygame.transform.scale(pygame.image.load('textures/tiles/grass2.png'), new_size)
+grass_img2 = pygame.transform.scale(pygame.image.load('textures/tiles/grass2.png'), (new_size[0]*2, new_size[1]*2))
 
 flowers1_img = pygame.transform.scale(pygame.image.load('textures/tiles/flowers1.png'), new_size)
 water_img = pygame.transform.scale(pygame.image.load('textures/tiles/water.png'), new_size)
@@ -133,7 +133,7 @@ class Game:
     def overworld(self):
         self.check_player_input()
         self.player_tile = self.get_tile()
-        self.blit_terrain()
+        blit_terrain(self.screen, self.window_size, tile_size, self.x, self.y, self.terrain_map, grass_img2, terrain_images_size, terrain_images)
         self.blit_player()
 
 
@@ -219,13 +219,7 @@ class Game:
 
 
 
-    '''def generate_terrain(self):
-        arr = np.loadtxt('map.txt', dtype=int)  
-        return arr'''
-
-
-
-    def blit_terrain(self):
+    '''def blit_terrain(self):
         self.screen.fill((0,0,0))
         blit_list = []
         for height in range(int(self.window_size[1]/tile_size) + 1):
@@ -247,7 +241,7 @@ class Game:
                 else:
                     blit_list.append((terrain_images[max(tile_type - 2, 0)], (width*tile_size - self.x%tile_size, height*tile_size - self.y%tile_size))) # - 2 for proper item from list, max to account for different blues in tile map
         
-        self.screen.blits(blit_list)
+        self.screen.blits(blit_list)'''
 
 
 
