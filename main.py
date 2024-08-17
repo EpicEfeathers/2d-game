@@ -6,7 +6,7 @@ import time
 import random
 
 from generate_corners import check_grass_tile, check_stone_tile, check_sand_tile
-from map import generate_map
+from map import generate_map, display_map
 
 from pygame.locals import *
 
@@ -124,7 +124,8 @@ class Game:
         if self.game_state == "overworld":
             self.overworld()
         elif self.game_state == "map":
-            self.display_map()
+            #self.display_map()
+            self.screen = display_map(self.screen, self.map, self.window_size, self.game_size, self.display_x, self.display_y, player_head)
 
 
 
@@ -262,22 +263,13 @@ class Game:
 
 
 
-    '''def generate_map(self):
-        self.map = pygame.Surface((self.game_size))
 
-        for y in range(self.game_size[1]):
-            for x in range(self.game_size[0]):
-                value = self.terrain_map[y, x]
-                self.map.set_at((x, y), colors.get(value, (0, 0, 0)))'''
-
-
-
-    def display_map(self):
+    '''def display_map(self):
         # show map
         self.screen.fill((0,0,0))
         self.screen.blit(self.map, ((self.window_size[0] - self.game_size[0]) / 2,0))
         # show player head
-        self.screen.blit(player_head, (((self.window_size[0] / 2 + self.display_x - player_head.get_width() / 2), (self.window_size[1] / 2 + self.display_y - player_head.get_height() / 2))))
+        self.screen.blit(player_head, (((self.window_size[0] / 2 + self.display_x - player_head.get_width() / 2), (self.window_size[1] / 2 + self.display_y - player_head.get_height() / 2))))'''
 
 
 

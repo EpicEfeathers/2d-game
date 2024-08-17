@@ -22,3 +22,13 @@ def generate_map(GAME_SIZE, terrain_map):
             map.set_at((x, y), colors.get(value, (0, 0, 0)))
 
     return map
+
+
+def display_map(screen, map, window_size, game_size, display_x, display_y, player_head):
+    # show map
+    screen.fill((0,0,0))
+    screen.blit(map, ((window_size[0] - game_size[0]) / 2,0))
+    # show player head
+    screen.blit(player_head, (((window_size[0] / 2 + display_x - player_head.get_width() / 2), (window_size[1] / 2 + display_y - player_head.get_height() / 2))))
+
+    return screen
