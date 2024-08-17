@@ -15,7 +15,7 @@ def blit_terrain(screen, window_size, tile_size, x, y, terrain_map, grass_img, t
         for width in range(int(window_size[0]/tile_size) + 1):
             tile_type = terrain_map[int(height + y/tile_size), int(width + x/tile_size)]
             if tile_type == 4:
-                tile = grass_img.subsurface((random.randint(0,1)*terrain_images_size, random.randint(0,1) * terrain_images_size, 64, 64))
+                tile = grass_img.subsurface((random.randint(0,3)*terrain_images_size, random.randint(0,3) * terrain_images_size, 64, 64))
                 #tile = grass_img.subsurface(0*terrain_images_size, 0 * terrain_images_size, 64, 64)
                 blit_list.append((tile, (width*tile_size - x%tile_size, height*tile_size - y%tile_size)))
             elif tile_type == 8:
