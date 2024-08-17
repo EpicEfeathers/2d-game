@@ -7,6 +7,7 @@ import random
 
 from generate_corners import check_grass_tile, check_stone_tile, check_sand_tile
 from map import generate_map, display_map
+from terrain import generate_terrain
 
 from pygame.locals import *
 
@@ -98,7 +99,7 @@ class Game:
         self.debug_value = True
         self.fps = 0
         self.clock = pygame.time.Clock()
-        self.terrain_map = self.generate_terrain()
+        self.terrain_map = generate_terrain()
         self.x = game_size[0]/2 * tile_size - (self.window_size[0] / 2)
         self.y = game_size[1]/2 * tile_size - (self.window_size[1] / 2)
         self.frame = self.player.animations.get_image(0,1,16,16)
@@ -218,9 +219,9 @@ class Game:
 
 
 
-    def generate_terrain(self):
+    '''def generate_terrain(self):
         arr = np.loadtxt('map.txt', dtype=int)  
-        return arr
+        return arr'''
 
 
 
