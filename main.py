@@ -219,32 +219,6 @@ class Game:
 
 
 
-    '''def blit_terrain(self):
-        self.screen.fill((0,0,0))
-        blit_list = []
-        for height in range(int(self.window_size[1]/tile_size) + 1):
-            for width in range(int(self.window_size[0]/tile_size) + 1):
-                tile_type = self.terrain_map[int(height + self.y/tile_size), int(width + self.x/tile_size)]
-                if tile_type == 4:
-                    tile = grass_img2.subsurface((random.randint(0,1)*terrain_images_size, random.randint(0,1) * terrain_images_size, 32, 32))
-                    #tile = grass_img2.subsurface(0*terrain_images_size, 0 * terrain_images_size, 64, 64)
-                    blit_list.append((tile, (width*tile_size - self.x%tile_size, height*tile_size - self.y%tile_size)))
-                elif tile_type == 8:
-                    tile = check_grass_tile(self.terrain_map, int(height + self.y/tile_size), int(width + self.x/tile_size))
-                    blit_list.append((tile, (width*tile_size - self.x%tile_size, height*tile_size - self.y%tile_size)))
-                elif tile_type == 9:
-                    tile = check_stone_tile(self.terrain_map, int(height + self.y/tile_size), int(width + self.x/tile_size))
-                    blit_list.append((tile, (width*tile_size - self.x%tile_size, height*tile_size - self.y%tile_size)))
-                elif tile_type == 10:
-                    tile = check_sand_tile(self.terrain_map, int(height + self.y/tile_size), int(width + self.x/tile_size))
-                    blit_list.append((tile, (width*tile_size - self.x%tile_size, height*tile_size - self.y%tile_size)))
-                else:
-                    blit_list.append((terrain_images[max(tile_type - 2, 0)], (width*tile_size - self.x%tile_size, height*tile_size - self.y%tile_size))) # - 2 for proper item from list, max to account for different blues in tile map
-        
-        self.screen.blits(blit_list)'''
-
-
-
     def blit_player(self):
         if self.player_tile > 2:
             self.speed = self.player.base_speed
