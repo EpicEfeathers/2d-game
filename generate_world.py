@@ -46,23 +46,23 @@ def generate_world(seed: int, width: int, height: int):
     mountain = [139, 137, 137]
 
     def add_color(world):
-        color_world = np.zeros(world.shape, dtype=np.uint8)
+        color_world = np.zeros(world.shape, dtype = object)
         for i in range(world.shape[0]):
             for j in range(world.shape[1]):
                 if world[i][j] < -0.5:
-                    color_world[i][j] = 0 # Deep water
+                    color_world[i][j] = "w0" # Deep water
                 elif world[i][j] < -0.27:
-                    color_world[i][j] = 1 # Water
+                    color_world[i][j] = "w1" # Water
                 elif world[i][j] < -0.2:
-                    color_world[i][j] = 2 # Shallow water
+                    color_world[i][j] = "w2" # Shallow water
                 elif world[i][j] < -0.1:
-                    color_world[i][j] = 3 # Sand
+                    color_world[i][j] = "sa" # Sand
                 elif world[i][j] < 0.2: 
-                    color_world[i][j] = 4 if random.random() < 0.97 else 5 # Grass / Flowers
+                    color_world[i][j] = "g" + str(random.randint(4, 19))
                 elif world[i][j] < 0.35:  
-                    color_world[i][j] = 6 # Stone
+                    color_world[i][j] = "st" # Stone
                 else:  # Snowy peaks
-                    color_world[i][j] = 7 # Snow
+                    color_world[i][j] = "sn" # Snow
 
         return color_world
     
@@ -71,92 +71,54 @@ def generate_world(seed: int, width: int, height: int):
     return color_world
 
 def add_edges_sand(world):
-    def test_right(w, h):
-        if world[w][h+1] <= 2: # backwards bc of how reading array
-            world[w][h] = 10
+    def test(w, h):
+        neighbors = [world[w][h+1], world[w][h-1], world[w+1][h], world[w-1][h]]
+        if "w2" in neighbors:
+            world[w][h] = "saE"
 
-    def test_left(w, h):
-        if world[w][h-1] <= 2: # backwards bc of how reading array
-            world[w][h] = 10
-
-    def test_up(w, h):
-        if world[w+1][h] <= 2: # backwards bc of how reading array
-            world[w][h] = 10
-
-    def test_down(w, h):
-        if world[w-1][h] <= 2: # backwards bc of how reading array
-            world[w][h] = 10
 
     for w in range(world.shape[0]):
         for h in range(world.shape[1]):
-            if world[w][h] == 3:
-                test_right(w, h)
-                test_left(w, h)
-                test_up(w, h)
-                test_down(w, h)
+            if world[w][h] == "sa":
+                test(w, h)
     return world
 
 def add_edges_grass(world):
-    def test_right(w, h):
-        if world[w][h+1] == 3: # backwards bc of how reading array
-            world[w][h] = 8
-
-    def test_left(w, h):
-        if world[w][h-1] == 3: # backwards bc of how reading array
-            world[w][h] = 8
-
-    def test_up(w, h):
-        if world[w+1][h] == 3: # backwards bc of how reading array
-            world[w][h] = 8
-
-    def test_down(w, h):
-        if world[w-1][h] == 3: # backwards bc of how reading array
-            world[w][h] = 8
+    def test(w, h):
+        neighbors = [world[w][h+1], world[w][h-1], world[w+1][h], world[w-1][h]]
+        if "sa" in neighbors:
+            world[w][h] = "gE"
 
     for w in range(world.shape[0]):
         for h in range(world.shape[1]):
-            if world[w][h] == 4 or world[w][h] == 5:
-                test_right(w, h)
-                test_left(w, h)
-                test_up(w, h)
-                test_down(w, h)
+            try:
+                if int(world[w][h][1:]) >= 4 and int(world[w][h][1:]) <= 19:
+                    test(w, h)
+            except:
+                pass
     return world
 
 
 def add_edges_stone(world):
-    def test_right(w, h):
-        if world[w][h+1] == 4 or world[w][h+1] == 5: # backwards bc of how reading array
-            world[w][h] = 9
+    def test(w, h):
+        neighbors = [world[w][h+1], world[w][h-1], world[w+1][h], world[w-1][h]]
+        for n in neighbors:
+            try:
+                if 4 <= int(n[1:]) <= 19:
+                    world[w][h] = "stE"
+            except:
+                pass
+            
+        '''except :
+            print("hfwofboiw")'''
 
-    def test_left(w, h):
-        if world[w][h-1] == 4 or world[w][h-1] == 5: # backwards bc of how reading array
-            world[w][h] = 9
-
-    def test_up(w, h):
-        if world[w+1][h] == 4 or world[w+1][h] == 5: # backwards bc of how reading array
-            world[w][h] = 9
-
-    def test_down(w, h):
-        if world[w-1][h] == 4 or world[w-1][h] == 5: # backwards bc of how reading array
-            world[w][h] = 9
 
     for w in range(world.shape[0]):
         for h in range(world.shape[1]):
-            if world[w][h] == 6:
-                test_right(w, h)
-                test_left(w, h)
-                test_up(w, h)
-                test_down(w, h)
+            if world[w][h] == "st":
+                test(w, h)
     return world
 
-def testing(world):
-    start = time.time()
-    for w in range(world.shape[0]):
-        for h in range(world.shape[1]):
-            if world[w][h] == 8:
-                world[w][h] == 8
-    print(time.time() - start)
-    return world
 
 terrain_array = generate_world(1, 832, 832)
 
@@ -166,10 +128,8 @@ terrain_array = add_edges_grass(terrain_array)
 
 terrain_array = add_edges_stone(terrain_array)
 
-terrain_array = testing(terrain_array)
-
 array_2d = terrain_array.reshape(-1, terrain_array.shape[-1])
 
-np.savetxt('map.txt', array_2d, fmt='%d')
+np.savetxt('map.txt', array_2d, fmt="%s")
 
 print("Successfully generated!")
