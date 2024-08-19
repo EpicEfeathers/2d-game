@@ -7,7 +7,7 @@ import random
 
 from generate_corners import check_grass_tile, check_stone_tile, check_sand_tile
 from map import generate_map, display_map
-from terrain import generate_terrain, blit_terrain
+from terrain import generate_terrain, blit_terrain, get_grass_tile
 
 from pygame.locals import *
 
@@ -43,6 +43,15 @@ terrain_images = [water_img, sand_img, grass_img, flowers1_img, stone_img, snow_
 player_skin = pygame.image.load('textures/skins.png')
 wave = pygame.image.load('textures/wave.png')
 player_head = pygame.transform.scale(pygame.image.load('textures/player_head.png'), (8 * scale / 2, 7 * scale / 2))
+
+def load_grass_tiles(spritesheet, tile_size):
+    grass_tiles = []
+    for index in range(16):  # Assuming there are 16 tiles (4x4 grid)
+        x = index % 4
+        y = index // 4
+        tile = spritesheet.subsurface((x * tile_size, y * tile_size, tile_size, tile_size))
+        grass_tiles.append(tile)
+    return grass_tiles
 
 
 class Player:
@@ -113,7 +122,7 @@ class Game:
             "st": pygame.transform.scale(pygame.image.load("textures/tiles/stone.png").convert(), new_size),
             "sa": pygame.transform.scale(pygame.image.load("textures/tiles/sand.png").convert(), new_size),
             "w": pygame.transform.scale(pygame.image.load("textures/tiles/water.png").convert(), new_size),
-            "g": pygame.transform.scale(pygame.image.load("textures/tiles/dirt.png").convert(), new_size),
+            "g": load_grass_tiles(grass_img.convert(), tile_size),
             "sn": pygame.transform.scale(pygame.image.load("textures/tiles/snow.png").convert(), new_size)
         }
 

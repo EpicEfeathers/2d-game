@@ -37,12 +37,18 @@ def generate_terrain():
 
     return screen'''
 
+def get_grass_tile(index, spritesheet, tile_size):
+    x = index % 4
+    y = index // 4
+
+    tile = spritesheet.subsurface((x*tile_size, y*tile_size, tile_size, tile_size))
+    return tile
 
 def blit_terrain(screen, window_size, tile_size, x_pos, y_pos, terrain_map, grass_img, terrain_images_size, terrain_images, tile_surfaces):
     screen.fill((0,0,0))
     blit_list = []
-    start = time.time()
     
+    start = time.time()
     for y, row in enumerate(terrain_map):
         if int(y_pos/64) <= y <= int((y_pos + window_size[1])/64):
             for x, tile in enumerate(row):
@@ -60,6 +66,11 @@ def blit_terrain(screen, window_size, tile_size, x_pos, y_pos, terrain_map, gras
                     elif tile == "stE":
                         tile = check_stone_tile(terrain_map, int(height + y_pos/tile_size), int(width + x_pos/tile_size))
                         blit_list.append((tile, (width*tile_size - x_pos%tile_size, height*tile_size - y_pos%tile_size)))
+                    elif tile[0] == "g":
+                        index = int(tile[1:])
+                        test = tile_surfaces["g"][index]
+                        blit_list.append((test, (width*tile_size - x_pos%tile_size, height*tile_size - y_pos%tile_size)))
+
                     else:
                         if tile in tile_surfaces:
                             tile_key = tile
@@ -71,7 +82,7 @@ def blit_terrain(screen, window_size, tile_size, x_pos, y_pos, terrain_map, gras
 
                         #print(f"\'{tile_key}\'")
                         blit_list.append((tile_surfaces[tile_key], (width*tile_size - x_pos%tile_size, height*tile_size - y_pos%tile_size)))
-
+    print(time.time() - start)
     screen.blits(blit_list)
-    #print(time.time() - start)
+
     return screen

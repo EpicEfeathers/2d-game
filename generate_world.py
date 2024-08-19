@@ -58,7 +58,7 @@ def generate_world(seed: int, width: int, height: int):
                 elif world[i][j] < -0.1:
                     color_world[i][j] = "sa" # Sand
                 elif world[i][j] < 0.2: 
-                    color_world[i][j] = "g" + str(random.randint(4, 19))
+                    color_world[i][j] = "g" + str(random.randint(0, 15))
                 elif world[i][j] < 0.35:  
                     color_world[i][j] = "st" # Stone
                 else:  # Snowy peaks
@@ -92,7 +92,7 @@ def add_edges_grass(world):
     for w in range(world.shape[0]):
         for h in range(world.shape[1]):
             try:
-                if int(world[w][h][1:]) >= 4 and int(world[w][h][1:]) <= 19:
+                if int(world[w][h][1:]) >= 0 and int(world[w][h][1:]) <= 15:
                     test(w, h)
             except:
                 pass
@@ -104,13 +104,10 @@ def add_edges_stone(world):
         neighbors = [world[w][h+1], world[w][h-1], world[w+1][h], world[w-1][h]]
         for n in neighbors:
             try:
-                if 4 <= int(n[1:]) <= 19:
+                if 0 <= int(n[1:]) <= 15:
                     world[w][h] = "stE"
             except:
                 pass
-            
-        '''except :
-            print("hfwofboiw")'''
 
 
     for w in range(world.shape[0]):
