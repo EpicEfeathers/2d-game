@@ -41,27 +41,37 @@ def generate_terrain():
 def blit_terrain(screen, window_size, tile_size, x_pos, y_pos, terrain_map, grass_img, terrain_images_size, terrain_images, tile_surfaces):
     screen.fill((0,0,0))
     blit_list = []
-
+    start = time.time()
+    
     for y, row in enumerate(terrain_map):
         if int(y_pos/64) <= y <= int((y_pos + window_size[1])/64):
             for x, tile in enumerate(row):
                 if int(x_pos/64) <= x <= int((x_pos + window_size[0])/64):
+
+                    width = x-int(x_pos/64)
+                    height = y-int(y_pos/64)
                     # Determine the surface to use based on the tile value
-                    if tile in tile_surfaces:
-                        tile_key = tile
+                    if tile == "gE":
+                        tile = check_grass_tile(terrain_map, int(height + y_pos/tile_size), int(width + x_pos/tile_size))
+                        blit_list.append((tile, (width*tile_size - x_pos%tile_size, height*tile_size - y_pos%tile_size)))
+                    elif tile == "saE":
+                        tile = check_sand_tile(terrain_map, int(height + y_pos/tile_size), int(width + x_pos/tile_size))
+                        blit_list.append((tile, (width*tile_size - x_pos%tile_size, height*tile_size - y_pos%tile_size)))
+                    elif tile == "stE":
+                        tile = check_stone_tile(terrain_map, int(height + y_pos/tile_size), int(width + x_pos/tile_size))
+                        blit_list.append((tile, (width*tile_size - x_pos%tile_size, height*tile_size - y_pos%tile_size)))
                     else:
-                        if tile[:2] in tile_surfaces:
-                            tile_key = tile[:2]
+                        if tile in tile_surfaces:
+                            tile_key = tile
                         else:
-                            tile_key = tile[0]
-                    #print(tile_key, x, y, terrain_map[y][x])
-                    
-                    surface = tile_surfaces[tile_key]
-            
-                    # Append to blit list
-                    blit_list.append((surface, ((x-int(x_pos/64))*tile_size - x_pos%tile_size, (y-int(y_pos/64))*tile_size - y_pos%tile_size)))
+                            if tile[:2] in tile_surfaces:
+                                tile_key = tile[:2]
+                            else:
+                                tile_key = tile[0]
 
-                    #print(x - x_pos%tile_size, y - y_pos%tile_size)
+                        #print(f"\'{tile_key}\'")
+                        blit_list.append((tile_surfaces[tile_key], (width*tile_size - x_pos%tile_size, height*tile_size - y_pos%tile_size)))
+
     screen.blits(blit_list)
-
+    #print(time.time() - start)
     return screen

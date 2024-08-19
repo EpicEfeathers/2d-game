@@ -36,14 +36,6 @@ water_img = pygame.transform.scale(pygame.image.load('textures/tiles/water.png')
 snow_img = pygame.transform.scale(pygame.image.load('textures/tiles/snow.png'), new_size)
 grass_corners_img = (pygame.image.load('textures/tiles/grass_corners.png'))
 
-tile_surfaces = {
-    "st": pygame.transform.scale(pygame.image.load("textures/tiles/stone.png"), new_size),  # Load image and optimize it
-    "sa": pygame.transform.scale(pygame.image.load("textures/tiles/sand.png"), new_size),
-    "w": pygame.transform.scale(pygame.image.load("textures/tiles/water.png"), new_size),
-    "g": pygame.transform.scale(pygame.image.load("textures/tiles/dirt.png"), new_size),
-    "sn": pygame.transform.scale(pygame.image.load("textures/tiles/snow.png"), new_size)
-}
-
 
 #terrain_images = [deep_water_img, water_img, shore_water_img, sand_img, grass_img, stone_img, snow_img]
 terrain_images = [water_img, sand_img, grass_img, flowers1_img, stone_img, snow_img, grass_corners_img]
@@ -117,6 +109,14 @@ class Game:
         self.game_state = "overworld"
         self.map = generate_map(self.game_size, self.terrain_map)
 
+        self.tile_surfaces = {
+            "st": pygame.transform.scale(pygame.image.load("textures/tiles/stone.png").convert(), new_size),
+            "sa": pygame.transform.scale(pygame.image.load("textures/tiles/sand.png").convert(), new_size),
+            "w": pygame.transform.scale(pygame.image.load("textures/tiles/water.png").convert(), new_size),
+            "g": pygame.transform.scale(pygame.image.load("textures/tiles/dirt.png").convert(), new_size),
+            "sn": pygame.transform.scale(pygame.image.load("textures/tiles/snow.png").convert(), new_size)
+        }
+
     def run(self):
         while True:
             self.check_main_input()
@@ -141,7 +141,7 @@ class Game:
     def overworld(self):
         self.check_player_input()
         self.player_tile = self.get_tile()
-        blit_terrain(self.screen, self.window_size, tile_size, self.x, self.y, self.terrain_map, grass_img, terrain_images_size, terrain_images, tile_surfaces)
+        blit_terrain(self.screen, self.window_size, tile_size, self.x, self.y, self.terrain_map, grass_img, terrain_images_size, terrain_images, self.tile_surfaces)
         self.blit_player()
 
 
