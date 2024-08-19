@@ -36,6 +36,14 @@ water_img = pygame.transform.scale(pygame.image.load('textures/tiles/water.png')
 snow_img = pygame.transform.scale(pygame.image.load('textures/tiles/snow.png'), new_size)
 grass_corners_img = (pygame.image.load('textures/tiles/grass_corners.png'))
 
+tile_surfaces = {
+    "st": pygame.transform.scale(pygame.image.load("textures/tiles/stone.png"), new_size),  # Load image and optimize it
+    "sa": pygame.transform.scale(pygame.image.load("textures/tiles/sand.png"), new_size),
+    "w": pygame.transform.scale(pygame.image.load("textures/tiles/water.png"), new_size),
+    "g": pygame.transform.scale(pygame.image.load("textures/tiles/dirt.png"), new_size),
+    "sn": pygame.transform.scale(pygame.image.load("textures/tiles/snow.png"), new_size)
+}
+
 
 #terrain_images = [deep_water_img, water_img, shore_water_img, sand_img, grass_img, stone_img, snow_img]
 terrain_images = [water_img, sand_img, grass_img, flowers1_img, stone_img, snow_img, grass_corners_img]
@@ -133,7 +141,7 @@ class Game:
     def overworld(self):
         self.check_player_input()
         self.player_tile = self.get_tile()
-        blit_terrain(self.screen, self.window_size, tile_size, self.x, self.y, self.terrain_map, grass_img, terrain_images_size, terrain_images)
+        blit_terrain(self.screen, self.window_size, tile_size, self.x, self.y, self.terrain_map, grass_img, terrain_images_size, terrain_images, tile_surfaces)
         self.blit_player()
 
 
@@ -220,7 +228,7 @@ class Game:
  
 
     def blit_player(self):
-        if self.player_tile > 2:
+        if self.player_tile[0] != "w":
             self.speed = self.player.base_speed
             self.screen.blit(pygame.transform.scale(self.frame, new_size), (self.window_size[0]/2-tile_size/2,self.window_size[1]/2-tile_size/2))
         else:

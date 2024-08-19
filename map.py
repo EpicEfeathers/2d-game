@@ -20,7 +20,7 @@ def generate_map(GAME_SIZE, terrain_map):
         for x in range(GAME_SIZE[0]):
             value = terrain_map[y, x]
             map.set_at((x, y), colors.get(value, (0, 0, 0)))
-
+            
     return map
 
 
